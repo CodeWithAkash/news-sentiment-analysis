@@ -18,7 +18,7 @@ if "articles" not in st.session_state:
 
 if st.button("Fetch & Analyze News"):
     params = {"q": company}
-    response = requests.get(API_URL, params=params)
+    response = requests.get(NEWS_API_URL, params=params)
 
     if response.status_code == 200:
         st.session_state.articles = response.json().get("articles", [])
