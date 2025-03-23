@@ -1,5 +1,6 @@
-streamlit==1.26.0
-flask==2.3.2
+Flask==2.3.2
+gunicorn==21.2.0
 requests==2.31.0
 textblob==0.17.1
 gtts==2.3.2
+python-dotenv==1.0.0
