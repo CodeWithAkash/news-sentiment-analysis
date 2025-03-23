@@ -1,19 +1,14 @@
-# News Summarization and Sentiment Analysis Application
+# 📰 News Sentiment Analysis Web App
 
-## Overview
-This is a web-based application that:
-1. Fetches news articles for a given company.
-2. Performs sentiment analysis on the articles.
-3. Generates a text-to-speech (TTS) output in Hindi.
+This is a **Streamlit-powered web app** that:
+- Fetches real-time news using an API.
+- Performs sentiment analysis.
+- Provides Hindi text-to-speech (TTS) for news insights.
 
-## Project Structure
-- `app.py`: Streamlit frontend.
-- `appi.py`: Flask backend (API).
-- `utils.py`: Utility functions for scraping, sentiment analysis, and TTS.
-- `requirements.txt`: List of dependencies.
+## 🚀 Setup & Installation
 
-## Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone <repository_url>
-   cd <repository_folder>
+### 1️⃣ Clone the repository
+```sh
+git clone https://github.com/your-repo/news-sentiment-analysis.git
+cd news-sentiment-analysis
+

@@ -1,64 +1,50 @@
 import streamlit as st
 import requests
+from utils import analyze_sentiment, text_to_speech
 
-# Title of the application
-st.title("News Summarization and Sentiment Analysis")
+# API Endpoint
+API_URL = "http://127.0.0.1:5000/get_news"
 
-# List of companies for the dropdown
-companies = [
-    "Google", "Apple", "Amazon", "Tesla", "Samsung", "Nvidia", "Groww", 
-    "Microsoft", "TCS", "Wipro", "Flipkart", "Nestle", "Boat", "Accenture", "Meta"
-]
+# Predefined list of companies
+companies = ["Tesla","Akaike technologies", "Apple", "Google", "Amazon", "Microsoft", "Meta", "TCS","Flipkart", "Facebook", "Meta", "Wipro", "Uber", "Jio", "Airtel"]
+st.title("📰 News Sentiment Analysis App")
 
-# Dropdown for company selection
-company_name = st.selectbox("Select a Company", companies)
+# Drop-down for company selection
+company = st.selectbox("Select a Company:", companies)
 
-# Button to fetch news
-if st.button("Fetch News"):
-    if company_name:
-        try:
-            # Call the backend API to fetch news
-            response = requests.get(f"http://localhost:8000/news/{company_name}")
-            
-            # Check if the request was successful
-            if response.status_code == 200:
-                data = response.json()
-                articles = data['articles']
-                sentiment_results = data['sentiment']
+# Initialize session state for articles
+if "articles" not in st.session_state:
+    st.session_state.articles = []
 
-                # Display articles
-                st.write("### Extracted Articles")
-                for article in articles:
-                    st.write(f"**Title:** {article['title']}")
-                    st.write(f"**Summary:** {article['summary']}")
-                    st.write("---")
+if st.button("Fetch & Analyze News"):
+    params = {"q": company}
+    response = requests.get(API_URL, params=params)
 
-                # Display sentiment analysis
-                st.write("### Sentiment Analysis")
-                st.write(f"Positive: {sentiment_results['positive']}")
-                st.write(f"Negative: {sentiment_results['negative']}")
-                st.write(f"Neutral: {sentiment_results['neutral']}")
+    if response.status_code == 200:
+        st.session_state.articles = response.json().get("articles", [])
 
-                # Generate TTS
-                summary = " ".join([article['summary'] for article in articles if article['summary']])
-                if summary:  # Ensure summary is not empty
-                    try:
-                        tts_response = requests.post(
-                            "http://localhost:8000/tts/",
-                            json={"text": summary}
-                        )
-                        if tts_response.status_code == 200:
-                            audio_file = tts_response.json()['audio_file']
-                            st.audio(audio_file)
-                        else:
-                            st.error("Failed to generate text-to-speech.")
-                    except Exception as e:
-                        st.error(f"An error occurred while generating TTS: {e}")
-                else:
-                    st.warning("No summary available for text-to-speech.")
-            else:
-                st.error(f"Failed to fetch news. Status code: {response.status_code}")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+        if st.session_state.articles:
+            for article in st.session_state.articles[:2]:  # Show first 5 articles
+                title = article.get("title", "No Title")
+                description = article.get("description", "No Description")
+                sentiment = analyze_sentiment(title + " " + description)
+
+                st.subheader(title)
+                st.write(description)
+                st.write(f"**Sentiment:** {sentiment}")
+                st.write(f"📅 {article.get('publishedAt', 'N/A')} | 🏛 {article.get('source', {}).get('name', 'Unknown')}")
+                st.markdown(f"[🔗 Read More]({article.get('url')})")
+                st.write("---")
+        else:
+            st.write("⚠ No news found. Try another company.")
     else:
-        st.warning("Please select a company from the dropdown.")
+        st.write("❌ Error fetching news.")
+
+# Generate Hindi audio summary
+if st.button("Generate Hindi Audio Summary"):
+    if st.session_state.articles:
+        text_summary = " ".join([article["title"] for article in st.session_state.articles[:2]])
+        audio_file = text_to_speech(text_summary)
+        st.audio(audio_file, format="audio/mp3")
+    else:
+        st.write("⚠ No articles available. Fetch news first.")
