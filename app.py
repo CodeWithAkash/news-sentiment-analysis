@@ -3,7 +3,7 @@ import requests
 from utils import analyze_sentiment, text_to_speech
 
 # API Endpoint
-API_URL = "https://news-sentiment-analysis-faw9.onrender.com/get_news"
+API_URL = "web-production-c7453.up.railway.app/get_news"
 
 # Predefined list of companies
 companies = ["Tesla","Accenture", "Apple", "Google", "Amazon", "Microsoft", "Meta", "TCS","Flipkart", "Facebook", "Meta", "Wipro", "Uber", "Jio", "Airtel"]
