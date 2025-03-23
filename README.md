@@ -1,3 +1,14 @@
+---
+title: "News Sentiment Analysis App"
+emoji: "📰"
+colorFrom: "blue"
+colorTo: "green"
+sdk: "streamlit"
+sdk_version: "1.25.0"
+app_file: "app.py"
+pinned: false
+---
+
 # News Sentiment Analysis App
 
 A web-based application that fetches news articles for a selected company, analyzes sentiment, and provides a Hindi text-to-speech (TTS) summary.
