@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # News API Configuration
 NEWS_API_KEY = "c0bdf992b01842188769ab55655d4f2f" 
-NEWS_API_URL = "https://newsapi.org/v2/everything"
+NEWS_API_URL = "https://news-sentiment-analysis-faw9.onrender.com/get_news"
 
 @app.route("/get_news", methods=["GET"])
 def get_news():
