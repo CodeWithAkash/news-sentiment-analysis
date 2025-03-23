@@ -10,9 +10,17 @@ def analyze_sentiment(text):
 # Text-to-Speech Function (Hindi)
 def text_to_speech(text, filename="news_audio.mp3"):
     try:
-        tts = gTTS(text=text, lang="hi")
+        # Ensure text is properly encoded
+        text = text.strip()
+        if not text:
+            return None
+
+        print(f"🔊 Converting to Hindi Speech: {text}")
+
+        # Generate Hindi TTS
+        tts = gTTS(text=text, lang="hi", slow=False)
         tts.save(filename)
         return filename
     except Exception as e:
-        print(f"Error in Text-to-Speech: {e}")
+        print(f"❌ Error in Text-to-Speech: {e}")
         return None
